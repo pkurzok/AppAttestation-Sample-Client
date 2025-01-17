@@ -11,7 +11,6 @@ import SwiftUI
 
 struct SampleListView {
     let sampleData: [Sample]
-    let onRefresh: @Sendable () async -> Void
 }
 
 // MARK: - View
@@ -36,10 +35,9 @@ extension SampleListView: View {
                 }
             }
         }
-        .refreshable(action: onRefresh)
     }
 }
 
 #Preview {
-    SampleListView(sampleData: Sample.mockList, onRefresh: {})
+    SampleListView(sampleData: Sample.mockList)
 }

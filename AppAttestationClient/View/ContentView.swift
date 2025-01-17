@@ -23,13 +23,19 @@ extension ContentView: View {
                 case .loading:
                     ProgressView()
                 case .idle:
-                    SampleListView(
-                        sampleData: viewModel.sampleData,
-                        onRefresh: viewModel.fetchSampleData
-                    )
+                    SampleListView(sampleData: viewModel.sampleData)
                 }
             }
             .navigationTitle("Sample Data")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        Task { await viewModel.fetchSampleData() }
+                    } label: {
+                        Image(systemName: "arrow.clockwise.circle")
+                    }
+                }
+            }
         }
         .task {
             await viewModel.fetchSampleData()

@@ -5,6 +5,7 @@
 //  Created by Peter Kurzok on 16.01.25.
 //
 
+import FirebaseAppCheck
 import Foundation
 import OSLog
 
@@ -18,7 +19,7 @@ struct RestSampleAdapter: SampleAdapterProtocol {
     init(
         apiKey: String,
         urlSession: URLSession = URLSession.shared,
-        baseUrl: String = "http://127.0.0.1:8080"
+        baseUrl: String = "http://localhost:8080"
     ) {
         self.apiKey = apiKey
         self.urlSession = urlSession
@@ -39,13 +40,27 @@ struct RestSampleAdapter: SampleAdapterProtocol {
     }
 
     private var samplesRequest: URLRequest {
-        let url = URL(string: "\(baseUrl)/samples")!
-        return authenticatedRequest(for: url)
+        get async {
+            let url = URL(string: "\(baseUrl)/samples")!
+            return await authenticatedRequest(for: url)
+        }
     }
 
-    private func authenticatedRequest(for url: URL) -> URLRequest {
+    private func authenticatedRequest(for url: URL) async -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue(apiKey, forHTTPHeaderField: "apiKey")
+        do {
+            try await request.setValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
+        } catch {
+            Logger.sampleApi.error("Error setting AppCheck token: \(error.localizedDescription)")
+        }
         return request
+    }
+
+    private var appCheckToken: String {
+        get async throws {
+            try await AppCheck.appCheck().token(forcingRefresh: false).token
+            // try await AppCheck.appCheck().limitedUseToken().token
+        }
     }
 }
