@@ -12,4 +12,5 @@ extension Logger {
 
     static let general = Logger(subsystem: subsystem, category: "General")
     static let sampleApi = Logger(subsystem: subsystem, category: "Sample API")
+    static let firestore = Logger(subsystem: subsystem, category: "Firestore")
 }

@@ -11,7 +11,7 @@ struct SampleRepository {
 
     private var sampleAdapter: SampleAdapterProtocol
 
-    init(sampleAdapter: SampleAdapterProtocol = RestSampleAdapter(apiKey: "HighlySecretAPIKey")) {
+    init(sampleAdapter: SampleAdapterProtocol = FirebaseSampleAdapter()) {
         self.sampleAdapter = sampleAdapter
     }
 
