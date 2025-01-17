@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C35397AA2D3A4BED00F83918 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C35397A92D3A4BED00F83918 /* FirebaseFirestore */; };
+		C35398152D3A540800F83918 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = C35398142D3A540800F83918 /* FirebaseAppCheck */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C35398152D3A540800F83918 /* FirebaseAppCheck in Frameworks */,
 				C35397AA2D3A4BED00F83918 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,6 +40,7 @@
 			isa = PBXGroup;
 			children = (
 				C35396EB2D395DF600F83918 /* AppAttestationClient */,
+				C35398132D3A540800F83918 /* Frameworks */,
 				C35396EA2D395DF600F83918 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +51,13 @@
 				C35396E92D395DF600F83918 /* AppAttestationClient.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C35398132D3A540800F83918 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,6 +81,7 @@
 			name = AppAttestationClient;
 			packageProductDependencies = (
 				C35397A92D3A4BED00F83918 /* FirebaseFirestore */,
+				C35398142D3A540800F83918 /* FirebaseAppCheck */,
 			);
 			productName = AppAttestationClient;
 			productReference = C35396E92D395DF600F83918 /* AppAttestationClient.app */;
@@ -258,6 +269,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AppAttestationClient/AppAttestationClient.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AppAttestationClient/Preview Content\"";
@@ -287,6 +299,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AppAttestationClient/AppAttestationClient.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AppAttestationClient/Preview Content\"";
@@ -350,6 +363,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C35397A82D3A4BED00F83918 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		C35398142D3A540800F83918 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C35397A82D3A4BED00F83918 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
