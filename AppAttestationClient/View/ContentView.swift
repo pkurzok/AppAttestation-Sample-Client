@@ -23,7 +23,10 @@ extension ContentView: View {
                 case .loading:
                     ProgressView()
                 case .idle:
-                    SampleListView(sampleData: viewModel.sampleData)
+                    SampleListView(
+                        sampleData: viewModel.sampleData,
+                        onRefresh: viewModel.fetchSampleData
+                    )
                 }
             }
             .navigationTitle("Sample Data")
