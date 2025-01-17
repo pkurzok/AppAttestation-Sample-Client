@@ -8,8 +8,22 @@
 import Firebase
 import SwiftUI
 
+#if DEBUG
+import Atlantis
+import FirebaseAppCheck
+#endif
+
+// MARK: - AppAttestationClientApp
+
 @main struct AppAttestationClientApp: App {
     init() {
+#if DEBUG
+        Atlantis.start()
+
+        let providerFactory = AppCheckDebugProviderFactory()
+        AppCheck.setAppCheckProviderFactory(providerFactory)
+#endif
+
         FirebaseApp.configure()
     }
 

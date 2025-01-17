@@ -9,15 +9,29 @@
 /* Begin PBXBuildFile section */
 		C35397AA2D3A4BED00F83918 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C35397A92D3A4BED00F83918 /* FirebaseFirestore */; };
 		C35398152D3A540800F83918 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = C35398142D3A540800F83918 /* FirebaseAppCheck */; };
+		C35398192D3A764600F83918 /* Atlantis in Frameworks */ = {isa = PBXBuildFile; productRef = C35398182D3A764600F83918 /* Atlantis */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C35396E92D395DF600F83918 /* AppAttestationClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppAttestationClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C353981B2D3A768000F83918 /* Exceptions for "AppAttestationClient" folder in "AppAttestationClient" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C35396E82D395DF600F83918 /* AppAttestationClient */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C35396EB2D395DF600F83918 /* AppAttestationClient */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C353981B2D3A768000F83918 /* Exceptions for "AppAttestationClient" folder in "AppAttestationClient" target */,
+			);
 			path = AppAttestationClient;
 			sourceTree = "<group>";
 		};
@@ -29,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C35398152D3A540800F83918 /* FirebaseAppCheck in Frameworks */,
+				C35398192D3A764600F83918 /* Atlantis in Frameworks */,
 				C35397AA2D3A4BED00F83918 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,6 +97,7 @@
 			packageProductDependencies = (
 				C35397A92D3A4BED00F83918 /* FirebaseFirestore */,
 				C35398142D3A540800F83918 /* FirebaseAppCheck */,
+				C35398182D3A764600F83918 /* Atlantis */,
 			);
 			productName = AppAttestationClient;
 			productReference = C35396E92D395DF600F83918 /* AppAttestationClient.app */;
@@ -113,6 +129,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C35397A82D3A4BED00F83918 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C35398172D3A764600F83918 /* XCRemoteSwiftPackageReference "atlantis" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C35396EA2D395DF600F83918 /* Products */;
@@ -276,6 +293,8 @@
 				DEVELOPMENT_TEAM = 99ED34GJ9X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AppAttestationClient/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Atlantis would use Bonjour Service to discover Proxyman app from your local network.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -306,6 +325,8 @@
 				DEVELOPMENT_TEAM = 99ED34GJ9X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AppAttestationClient/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Atlantis would use Bonjour Service to discover Proxyman app from your local network.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -356,6 +377,14 @@
 				minimumVersion = 11.7.0;
 			};
 		};
+		C35398172D3A764600F83918 /* XCRemoteSwiftPackageReference "atlantis" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ProxymanApp/atlantis";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.26.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -368,6 +397,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C35397A82D3A4BED00F83918 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAppCheck;
+		};
+		C35398182D3A764600F83918 /* Atlantis */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C35398172D3A764600F83918 /* XCRemoteSwiftPackageReference "atlantis" */;
+			productName = Atlantis;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
