@@ -12,4 +12,6 @@ extension Logger {
 
     static let general = Logger(subsystem: subsystem, category: "General")
     static let sampleApi = Logger(subsystem: subsystem, category: "Sample API")
+    static let attestation = Logger(subsystem: subsystem, category: "App Attest")
+    static let keychain = Logger(subsystem: subsystem, category: "Keychain")
 }
