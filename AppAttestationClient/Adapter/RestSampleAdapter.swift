@@ -18,7 +18,7 @@ struct RestSampleAdapter: SampleAdapterProtocol {
     init(
         apiKey: String,
         urlSession: URLSession = URLSession.shared,
-        baseUrl: String = "http://127.0.0.1:8080"
+        baseUrl: String = InfoPlistAdapter.baseUrl
     ) {
         self.apiKey = apiKey
         self.urlSession = urlSession
