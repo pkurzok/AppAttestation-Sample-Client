@@ -10,9 +10,14 @@ import Foundation
 struct SampleRepository {
 
     private var sampleAdapter: SampleAdapterProtocol
+    private var attestAdapter: AppAttestAdapterProtocol
 
-    init(sampleAdapter: SampleAdapterProtocol = RestSampleAdapter(apiKey: "HighlySecretAPIKey")) {
+    init(
+        sampleAdapter: SampleAdapterProtocol = RestSampleAdapter(apiKey: "HighlySecretAPIKey"),
+        attestAdapter: AppAttestAdapterProtocol = AppAttestAdapter()
+    ) {
         self.sampleAdapter = sampleAdapter
+        self.attestAdapter = attestAdapter
     }
 
     func fetchSamples() async -> [Sample] {
