@@ -15,14 +15,18 @@ struct RestSampleAdapter: SampleAdapterProtocol {
     private let apiKey: String
     private let baseUrl: String
 
+    private let deviceCheckAdapter: DeviceCheckProtocol
+
     init(
         apiKey: String,
         urlSession: URLSession = URLSession.shared,
-        baseUrl: String = InfoPlistAdapter.baseUrl
+        baseUrl: String = InfoPlistAdapter.baseUrl,
+        deviceCheckAdapter: DeviceCheckProtocol = DeviceCheckAdapter()
     ) {
         self.apiKey = apiKey
         self.urlSession = urlSession
         self.baseUrl = baseUrl
+        self.deviceCheckAdapter = deviceCheckAdapter
     }
 
     func fetchSamples() async -> [Sample] {
@@ -39,13 +43,19 @@ struct RestSampleAdapter: SampleAdapterProtocol {
     }
 
     private var samplesRequest: URLRequest {
-        let url = URL(string: "\(baseUrl)/samples")!
-        return authenticatedRequest(for: url)
+        get async {
+            let url = URL(string: "\(baseUrl)/samples")!
+            return await authenticatedRequest(for: url)
+        }
     }
 
-    private func authenticatedRequest(for url: URL) -> URLRequest {
+    private func authenticatedRequest(for url: URL) async -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue(apiKey, forHTTPHeaderField: "apiKey")
+
+        if let deviceToken = await deviceCheckAdapter.deviceToken {
+            request.setValue(deviceToken.base64EncodedString(), forHTTPHeaderField: "deviceToken")
+        }
         return request
     }
 }
