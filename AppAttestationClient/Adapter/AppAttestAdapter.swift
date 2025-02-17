@@ -13,8 +13,8 @@ import OSLog
 // MARK: - AppAttestAdapterProtocol
 
 protocol AppAttestAdapterProtocol {
-    func attestation() async -> Data?
     func attestAssertion() async -> Data?
+    func postAttestation() async
 }
 
 // MARK: - AppAttestAdapter
@@ -36,41 +36,69 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
         self.keychain = keychain
         self.urlSession = urlSession
         self.baseUrl = baseUrl
-
-        generateKeyIfNeeded()
     }
 
-    func attestation() async -> Data? {
+    func postAttestation() async {
+        await generateKeyIfNeeded()
+
         guard service.isSupported else {
             Logger.attestation.error("Attestation not supported")
-            return nil
-        }
-
-        guard let challenge = await fetchChallenge(),
-              let challengeData = challenge.data(using: .utf8) else {
-            Logger.attestation.error("Couldn't fetch Challenge, aborting!")
-            return nil
+            return
         }
 
         guard let keyId = keychain.attestationKeyId else {
             Logger.attestation.error("No KeyId found, aborting!")
-            return nil
+            return
         }
-        let hash = Data(SHA256.hash(data: challengeData))
+
+        guard let challenge = await fetchChallenge() else {
+            Logger.attestation.error("Couldn't fetch Challenge, aborting!")
+            return
+        }
+
+        let hash = Data(SHA256.hash(data: challenge.data))
 
         do {
             let attestKey = try await service.attestKey(keyId, clientDataHash: hash)
             Logger.attestation.debug("Received Attestation: \(attestKey.debugDescription)")
-            return attestKey
+
+            await postAttestationKey(attestKey, keyId: keyId, challengeId: challenge.id)
+
+            return
         } catch {
             Logger.attestation.error("Error for Attestation: \(error.localizedDescription)")
-            return nil
+            return
+        }
+    }
+
+    private func postAttestationKey(_ key: Data, keyId: String, challengeId: UUID) async {
+        guard let keyIdData = keyId.data(using: .utf8) else {
+            Logger.attestation.error("Couldn't convert KeyId to Data, aborting!")
+            return
+        }
+        guard let url = URL(string: "\(baseUrl)/attestation") else { return }
+
+        let req = AttestationRequest(attestation: key, keyID: keyIdData, challengeID: challengeId)
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.httpBody = try? JSONEncoder().encode(req)
+
+        urlRequest.setValue(
+            "application/json",
+            forHTTPHeaderField: "Content-Type"
+        )
+
+        do {
+            let (data, response) = try await urlSession.data(for: urlRequest)
+            Logger.attestation.debug("Got response: \(response.debugDescription)")
+        } catch {
+            Logger.attestation.error("Error posting Attestation: \(error.localizedDescription)")
         }
     }
 
     func attestAssertion() async -> Data? {
-        guard let challenge = await fetchChallenge(),
-              let challengeData = challenge.data(using: .utf8) else {
+        guard let challenge = await fetchChallenge() else {
             Logger.attestation.error("Couldn't fetch Challenge, aborting!")
             return nil
         }
@@ -79,7 +107,7 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
             Logger.attestation.error("No KeyId found, aborting!")
             return nil
         }
-        let hash = Data(SHA256.hash(data: challengeData))
+        let hash = Data(SHA256.hash(data: challenge.data))
 
         do {
             return try await service.generateAssertion(keyId, clientDataHash: hash)
@@ -89,14 +117,13 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
         }
     }
 
-    private func fetchChallenge() async -> String? {
+    private func fetchChallenge() async -> Challenge? {
         guard let url = URL(string: "\(baseUrl)/challenge") else { return nil }
 
         do {
             let (data, _) = try await urlSession.data(from: url)
-
-            guard let challenge = String(data: data, encoding: .utf8) else { return nil }
-            Logger.attestation.debug("Fetched Challenge: \(challenge)")
+            let challenge = try JSONDecoder().decode(Challenge.self, from: data)
+            Logger.attestation.debug("Fetched Challenge with ID: \(challenge.id)")
             return challenge
         } catch {
             Logger.attestation.error("Error fetching Challenge: \(error.localizedDescription)")
@@ -104,28 +131,25 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
         }
     }
 
-    private func generateKeyIfNeeded() {
+    private func generateKeyIfNeeded() async {
         guard keychain.hasAttestationKeyId == false else { return }
 
         Logger.attestation.log("No Attestation KeyId found in Keychain. Generating new one...")
-        generateKey()
+        await generateKey()
     }
 
-    private func generateKey() {
+    private func generateKey() async {
         guard service.isSupported else {
             Logger.attestation.error("Attestation not supported")
             return
         }
-        service.generateKey { keyId, error in
-            guard error == nil else {
-                Logger.attestation.error("Error generating Attestation Key: \(error?.localizedDescription ?? "")")
-                return
-            }
 
-            if let keyId {
-                self.keychain.attestationKeyId = keyId
-                Logger.attestation.log("... did generate Attestation KeyId: \(keyId)")
-            }
+        do {
+            let keyId = try await service.generateKey()
+            keychain.attestationKeyId = keyId
+            Logger.attestation.log("... did generate Attestation KeyId: \(keyId)")
+        } catch {
+            Logger.attestation.error("Error generating Attestation Key: \(error.localizedDescription)")
         }
     }
 }

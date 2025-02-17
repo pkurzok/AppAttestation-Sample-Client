@@ -18,6 +18,10 @@ struct SampleRepository {
     ) {
         self.sampleAdapter = sampleAdapter
         self.attestAdapter = attestAdapter
+
+        Task {
+            await attestAdapter.postAttestation()
+        }
     }
 
     func fetchSamples() async -> [Sample] {
