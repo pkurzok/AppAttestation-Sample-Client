@@ -3,6 +3,10 @@ AppAttestation Sample Implementation of an iOS Client
 
 [Matching Vapor Backend Example](https://github.com/pkurzok/AppAttestation-Sample-Server)
 
+## How to use this repo
+This repo contains a sample application that fetches some sample data from a REST endpoint. 
+
+On the main branch, communications to this endpoint are "secured" by an API token. On the 4 other branches, you can see variations of the same app that demonstrate different security concepts, including Device Identification Validation, App Attestation, and Firebase's App Check.
 
 ## Useful Links
 [Apple's Documentation](https://developer.apple.com/documentation/devicecheck) 
