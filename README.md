@@ -13,4 +13,6 @@ AppAttestation Sample Implementation of an iOS Client
 
 [Ian Sampson's server side AppAttest validation Library](https://github.com/iansampson/AppAttest)
 
-[Oliver Binns Demo inlcuding Slides from his NSLondon Talk](https://github.com/Oliver-Binns/app-attest)
+[Oliver Binns' Demo inlcuding Slides from his NSLondon Talk](https://github.com/Oliver-Binns/app-attest)
+
+[Matt Nelson-White's article on App Attestation with insides on server side validation](https://dev.to/mnelsonwhite/implementing-apples-device-check-app-attest-protocol-4p2g)
