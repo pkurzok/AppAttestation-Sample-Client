@@ -10,4 +10,5 @@ import Foundation
 protocol SampleAdapterProtocol {
 
     func fetchSamples() async -> [Sample]
+    func fetchSamples(with assertion: AssertionRequest) async -> [Sample]
 }
