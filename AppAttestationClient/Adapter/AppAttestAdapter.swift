@@ -72,13 +72,18 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
     }
 
     private func postAttestationKey(_ key: Data, keyId: String, challengeId: UUID) async {
-        guard let keyIdData = keyId.data(using: .utf8) else {
+        guard let keyIdData = Data(base64Encoded: keyId)
+        else {
             Logger.attestation.error("Couldn't convert KeyId to Data, aborting!")
             return
         }
         guard let url = URL(string: "\(baseUrl)/attestation") else { return }
 
-        let req = AttestationRequest(attestation: key, keyID: keyIdData, challengeID: challengeId)
+        let req = AttestationRequest(
+            attestation: key,
+            keyID: keyIdData,
+            challengeID: challengeId
+        )
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
