@@ -14,6 +14,7 @@ import OSLog
 protocol KeychainAdapterProtocol {
     var attestationKeyId: String? { get set }
     var hasAttestationKeyId: Bool { get }
+    func removeAttestationKey()
 }
 
 // MARK: - KeychainAdapter
@@ -34,6 +35,14 @@ struct KeychainAdapter: KeychainAdapterProtocol {
 
     var hasAttestationKeyId: Bool {
         has(key: .attestationKeyId)
+    }
+
+    func removeAttestationKey() {
+        do {
+            try keychain.remove(KeychainKey.attestationKeyId.rawValue)
+        } catch {
+            Logger.keychain.error("Error removing Attestation Key: \(error.localizedDescription)")
+        }
     }
 
     private func has(key: KeychainKey) -> Bool {

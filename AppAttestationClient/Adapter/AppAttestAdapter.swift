@@ -73,6 +73,7 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
             Logger.attestation.log("Successfully validated Attestation")
         } catch {
             Logger.attestation.error("Error for Attestation: \(error.localizedDescription)")
+            keychain.removeAttestationKey()
         }
     }
 
@@ -106,6 +107,7 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
             )
         } catch {
             Logger.attestation.error("Error generation Assertion: \(error.localizedDescription)")
+            keychain.removeAttestationKey()
             return nil
         }
     }
