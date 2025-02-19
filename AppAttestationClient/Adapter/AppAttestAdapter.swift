@@ -103,7 +103,7 @@ class AppAttestAdapter: AppAttestAdapterProtocol {
                 assertion: assertion,
                 keyID: keyIdData,
                 challengeID: challenge.id,
-                clientData: Data()
+                clientData: challenge.data
             )
         } catch {
             Logger.attestation.error("Error generation Assertion: \(error.localizedDescription)")
